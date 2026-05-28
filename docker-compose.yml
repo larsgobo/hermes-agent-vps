@@ -3,13 +3,18 @@ services:
     build: .
     image: hermes-agent
     restart: unless-stopped
-    network_mode: host
     volumes:
       - hermes-data:/opt/data
+    ports:
+      - "127.0.0.1:9119:9119"
+      - "127.0.0.1:8642:8642"
     environment:
       - HERMES_UID=10000
       - HERMES_GID=10000
-    command: ["dashboard", "--host", "127.0.0.1", "--no-open"]
+      - HERMES_DASHBOARD=1
+      - HERMES_DASHBOARD_HOST=0.0.0.0
+      - HERMES_DASHBOARD_PORT=9119
+    command: ["gateway", "run"]
 
 volumes:
   hermes-data:
