@@ -1,9 +1,22 @@
 services:
-  dashboard:
+  gateway:
     build: .
     image: hermes-agent
     restart: unless-stopped
     network_mode: host
+    volumes:
+      - hermes-data:/opt/data
+    environment:
+      - HERMES_UID=10000
+      - HERMES_GID=10000
+    command: ["gateway", "run"]
+
+  dashboard:
+    image: hermes-agent
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - gateway
     volumes:
       - hermes-data:/opt/data
     environment:
